@@ -16,6 +16,7 @@
 # Revision History:
 # 2012-02-29: <jde6 [at] psu.edu> Initial Version
 # 2012-07-25: <jde6 [at] psu.edu> Removed References to 'Lion'. Fixed Small typo.
+# 2012-07-25: <jde6 [at] psu.edu> Now checking that the destination is both a directory and is writable.
 # ----------------------------------------------------------
 
 use strict; # Declare strict checking on variable names, etc.
@@ -72,6 +73,29 @@ if (@ARGV<1)
   exit(-1);   # When usage() has completed execution,
             # exit the program.
 }
+
+# ----------------------------------------------------------
+# Make sure that the destination is a directory and is writable:
+# ----------------------------------------------------------
+
+my $destDir = $dirName;
+
+if ( ( -d $destDir ) && ( -w $destDir ) )
+{
+	print "$programName: Success: The destination path '$destDir' is a writable directory.\n\n";
+}
+else
+{
+	print "$programName: ERROR! The destination path '$destDir' is not a writable directory. Exiting.\n\n";
+	exit -1;
+}
+
+if ( $destDir ne "." ) # The user is running this script from the full path to it versus in the pwd:
+{
+	$destDir = $dirName . "/.";
+}
+
+$destDir = "\"" . $destDir . "\""; # add quotes to the path as there is white space that hasn't been delimited
 
 # ----------------------------------------------------------
 # Build the input parameters list:
@@ -134,15 +158,6 @@ my $MacOSBaseSystemVolumePath = "/Volumes/Mac OS X Base System";
 my $SetRegPropToolPath = "\"" . $MacOSBaseSystemVolumePath . "/Applications/Utilities/Firmware Password Utility.app/Contents/Resources/setregproptool\"";
 
 print "$programName: Attempting to copy 'setregproptool' from the path of '$SetRegPropToolPath' next ...\n";
-
-my $destDir = $dirName;
-
-if ( $destDir ne "." ) # The user is running this script from the full path to it versus in the pwd:
-{
-	$destDir = $dirName . "/.";
-}
-
-$destDir = "\"" . $destDir . "\""; # add quotes to the path as there is white space that hasn't been delimited
 
 my $CopySetRegPropToolResult = system("/bin/cp -p " . $SetRegPropToolPath . " " . $destDir) >> 8;
 

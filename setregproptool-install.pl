@@ -15,6 +15,7 @@
 # ----------------------------------------------------------
 # Revision History:
 # 2012-02-29: <jde6 [at] psu.edu> Initial Version
+# 2012-07-25: <jde6 [at] psu.edu> Removed References to 'Lion'. Fixed Small typo.
 # ----------------------------------------------------------
 
 use strict; # Declare strict checking on variable names, etc.
@@ -28,7 +29,7 @@ print "\n*** $programName: Starting...\n\n";
 # Check that we're running as root (or via sudo)
 # ----------------------------------------------------------
 
-if ( $< != 0 ) # $> = effective user id (euid)
+if ( $< != 0 ) # '$<' is the effective user id in Perl (euid)
 {
         print "$programName: Sorry, but this script must be ran via 'sudo' or as the root user. Exiting.\n***\n";
         exit -1;
@@ -82,44 +83,44 @@ print "$programName: Path to this script = '$fullPathToMe'\n";
 print "$programName: Received path = '$OSXInstallerPath'\n"; 
 
 # ----------------------------------------------------------
-# Mount the Lion InstallESD.dmg first:
+# Mount the OS X InstallESD.dmg first:
 # ----------------------------------------------------------
 
-my $LionESDImagePath = "\"" . $OSXInstallerPath . "/Contents/SharedSupport/InstallESD.dmg" . "\"";
+my $OSXESDImagePath = "\"" . $OSXInstallerPath . "/Contents/SharedSupport/InstallESD.dmg" . "\"";
 
-print "\n$programName: Mounting the 'InstallESD.dmg' at the path of '$LionESDImagePath' ...\n\n";
+print "\n$programName: Mounting the 'InstallESD.dmg' at the path of '$OSXESDImagePath' ...\n\n";
 
-my $mountLionESDResult = system("/usr/bin/hdiutil attach " . $LionESDImagePath) >> 8;
+my $mountOSXESDResult = system("/usr/bin/hdiutil attach " . $OSXESDImagePath) >> 8;
 
-if ($mountLionESDResult != 0)
+if ($mountOSXESDResult != 0)
 {
-	print "$programName: ERROR: Unable to mount the Lion ESD Disk Image!\n";
+	print "$programName: ERROR: Unable to mount the OS X ESD Disk Image!\n";
 	exit -1;
 }
 else
 {
-	print "\n$programName: Successfully mounted the Lion ESD Image.\n";
+	print "\n$programName: Successfully mounted the OS X ESD Image.\n";
 }
 
 # ----------------------------------------------------------
 # Mount the 'BaseSystem.dmg' next:
 # ----------------------------------------------------------
 
-my $LionESDInstallVolPath = "/Volumes/Mac OS X Install ESD";
-my $LionBaseSystemImagePath = "\"" . $LionESDInstallVolPath . "/BaseSystem.dmg\"";
+my $OSXESDInstallVolPath = "/Volumes/Mac OS X Install ESD";
+my $OSXBaseSystemImagePath = "\"" . $OSXESDInstallVolPath . "/BaseSystem.dmg\"";
 
-print "\n$programName: Mounting the 'BaseSystem.dmg' at the path of '$LionBaseSystemImagePath' ...\n\n";
+print "\n$programName: Mounting the 'BaseSystem.dmg' at the path of '$OSXBaseSystemImagePath' ...\n\n";
 
-my $mountLionBaseSystemResult = system("/usr/bin/hdiutil attach " . $LionBaseSystemImagePath) >> 8;
+my $mountOSXBaseSystemResult = system("/usr/bin/hdiutil attach " . $OSXBaseSystemImagePath) >> 8;
 
-if ($mountLionBaseSystemResult != 0)
+if ($mountOSXBaseSystemResult != 0)
 {
-	print "$programName: ERROR: Unable to mount the Lion BaseSystem Disk Image!\n";
+	print "$programName: ERROR: Unable to mount the OS X BaseSystem Disk Image!\n";
 	exit -1;
 }
 else
 {
-	print "\n$programName: Successfully mounted the Lion BaseSystem Image.\n";
+	print "\n$programName: Successfully mounted the OS X BaseSystem Image.\n";
 }
 
 # ----------------------------------------------------------
@@ -182,7 +183,7 @@ else
 print "\n$programName: Unmounting the 'InstallESD.dmg' \(\"Mac OS X Install ESD\"\ in the Finder) ...\n\n";
 
 # hdiutil detach "/Volumes/Mac OS X Base System"
-my $DetachOSXESDDmgResult = system("/usr/bin/hdiutil detach \"" . $LionESDInstallVolPath . "\"") >> 8;
+my $DetachOSXESDDmgResult = system("/usr/bin/hdiutil detach \"" . $OSXESDInstallVolPath . "\"") >> 8;
 
 if ($DetachOSXESDDmgResult != 0)
 {
@@ -209,5 +210,5 @@ exit 0;
 sub usage
 {
   print "$programName: ERROR: Minimum number of parameters not received.\n";
-  print "$programName: Usage: sudo ./$programName /path/to/Install Mac OS X Lion.app\n";
+  print "$programName: Usage: sudo ./$programName /path/to/Install OS X CuteFurryAnimalNameHere.app\n";
 }

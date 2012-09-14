@@ -12,19 +12,12 @@
 # Use of this script for other purposes is permitted as long as credit to Justin Elliott is mentioned.
 # ----------------------------------------------------------
 
-# ----------------------------------------------------------
-# Revision History:
-# 2012-02-29: <jde6 [at] psu.edu> Initial Version
-# 2012-07-25: <jde6 [at] psu.edu> Removed References to 'Lion'. Fixed Small typo.
-# 2012-07-25: <jde6 [at] psu.edu> Now checking that the destination is both a directory and is writable.
-# ----------------------------------------------------------
-
 use strict; # Declare strict checking on variable names, etc.
 use File::Basename; # Used to get this script's filename
 
 my ( $programName ) = basename($0);
 
-print "\n*** $programName: Starting...\n\n";
+print "***\n";
 
 # ----------------------------------------------------------
 # Check that we're running as root (or via sudo)
@@ -32,7 +25,7 @@ print "\n*** $programName: Starting...\n\n";
 
 if ( $< != 0 ) # '$<' is the effective user id in Perl (euid)
 {
-        print "$programName: Sorry, but this script must be ran via 'sudo' or as the root user. Exiting.\n***\n";
+        print "Sorry, but this script must be executed via 'sudo' or as the root user. Exiting.\n***\n";
         exit -1;
 }
 
@@ -40,14 +33,17 @@ if ( $< != 0 ) # '$<' is the effective user id in Perl (euid)
 # Check that we're running on 10.7 or later:
 # ----------------------------------------------------------
 
-$_=`/usr/bin/sw_vers -productVersion`;
-/(\d+).(\d+).(\d+)/; # ie, $1="10" $2="6" $3="8"
+my $fullOSXversionStr = `/usr/bin/sw_vers -productVersion`;
+$fullOSXversionStr =~ s/\s+//; # Remove all whitespace characters
 
-print "This Mac appears to be running $1.$2.$3.\n\n";
+# (my $MajorVersion, my $MinorVersion, my $BugFixVersion) = ("10","6","8"); # For Testing Purposes, to get the check to fail
+(my $MajorVersion, my $MinorVersion, my $BugFixVersion) = split('\.', $fullOSXversionStr);
+
+print "OS X System Version: Major = '$MajorVersion', Minor = '$MinorVersion', Bug Fix = '$BugFixVersion'\n";
 
 my $ErrMsg = "ERROR: Sorry, but this script only supports Mac OS X 10.7 and higher.\n\n***$programName exiting.\n";
 
-if ( ($1 < 10) || ( ( $1 == 10 ) && ( $2 < 7 ) ) )
+if ( ($MajorVersion < 10) || ( ( $MajorVersion == 10 ) && ( $MinorVersion < 7 ) ) )
 {
 	print "$programName: $ErrMsg";
 	exit (-1);	

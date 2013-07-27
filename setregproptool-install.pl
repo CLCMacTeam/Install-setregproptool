@@ -110,7 +110,7 @@ my $OSXESDImagePath = "\"" . $OSXInstallerPath . "/Contents/SharedSupport/Instal
 
 print "\n$programName: Mounting the 'InstallESD.dmg' at the path of '$OSXESDImagePath' ...\n\n";
 
-my $mountOSXESDResult = system("/usr/bin/hdiutil attach " . $OSXESDImagePath) >> 8;
+my $mountOSXESDResult = system("/usr/bin/hdiutil attach " . $OSXESDImagePath . " -nobrowse") >> 8;
 
 if ($mountOSXESDResult != 0)
 {
@@ -131,7 +131,7 @@ my $OSXBaseSystemImagePath = "\"" . $OSXESDInstallVolPath . "/BaseSystem.dmg\"";
 
 print "\n$programName: Mounting the 'BaseSystem.dmg' at the path of '$OSXBaseSystemImagePath' ...\n\n";
 
-my $mountOSXBaseSystemResult = system("/usr/bin/hdiutil attach " . $OSXBaseSystemImagePath) >> 8;
+my $mountOSXBaseSystemResult = system("/usr/bin/hdiutil attach " . $OSXBaseSystemImagePath . " -nobrowse") >> 8;
 
 if ($mountOSXBaseSystemResult != 0)
 {

@@ -126,7 +126,17 @@ else
 # Mount the 'BaseSystem.dmg' next:
 # ----------------------------------------------------------
 
-my $OSXESDInstallVolPath = "/Volumes/Mac OS X Install ESD";
+my $OSXESDInstallVolPath = "";
+
+if ( ( $MajorVersion == 10 ) && ( $MinorVersion < 9 ) )
+{
+	$OSXESDInstallVolPath = "/Volumes/Mac OS X Install ESD";
+}
+else
+{
+	$OSXESDInstallVolPath = "/Volumes/OS X Install ESD";
+}
+
 my $OSXBaseSystemImagePath = "\"" . $OSXESDInstallVolPath . "/BaseSystem.dmg\"";
 
 print "\n$programName: Mounting the 'BaseSystem.dmg' at the path of '$OSXBaseSystemImagePath' ...\n\n";
@@ -149,7 +159,16 @@ else
 
 print "\n$programName: Copying 'setregproptool' to the same directory as this script ...\n\n";
 
-my $MacOSBaseSystemVolumePath = "/Volumes/Mac OS X Base System";
+my $MacOSBaseSystemVolumePath = "";
+
+if ( ( $MajorVersion == 10 ) && ( $MinorVersion < 9 ) )
+{
+	$MacOSBaseSystemVolumePath = "/Volumes/Mac OS X Base System";
+}
+else
+{
+	$MacOSBaseSystemVolumePath = "/Volumes/OS X Base System";
+}
 
 my $SetRegPropToolPath = "\"" . $MacOSBaseSystemVolumePath . "/Applications/Utilities/Firmware Password Utility.app/Contents/Resources/setregproptool\"";
 
@@ -221,5 +240,5 @@ exit 0;
 sub usage
 {
   print "$programName: ERROR: Minimum number of parameters not received.\n";
-  print "$programName: Usage: sudo ./$programName /path/to/Install OS X CuteFurryAnimalNameHere.app\n";
+  print "$programName: Usage: sudo ./$programName /path/to/Install OS X.app\n";
 }

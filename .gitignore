@@ -1,0 +1,2 @@
+# Ignore the 'setregproptool' binary that gets copied to the working directory of this repo after running the script:
+setregproptool

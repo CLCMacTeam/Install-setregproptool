@@ -1,7 +1,7 @@
 Install-setregproptool
 ======================
 
-Supports on OS X 10.7 and newer.
+Supports OS X 10.7 and newer.
 
 Perl script to install 'setregproptool', Apple's OS X Firmware Security command line tool.
 
